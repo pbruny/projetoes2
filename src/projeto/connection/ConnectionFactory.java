@@ -10,12 +10,12 @@ import com.mysql.cj.protocol.Resultset;
 
 public class ConnectionFactory {
 	
-	private final String DRIVER = "com.mysql.jdbc.Driver";
-	private final String URL = "jdbc:mysql://localhost:3306/dboficina";
-	private final String USER = "root";
-	private final String PASS = "root";
+	private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
+	private final static String URL = "jdbc:mysql://localhost:3306/dboficina?useTimezone=true&serverTimezone=UTC";
+	private final static String USER = "root";
+	private final static String PASS = "root";
 	
-	public Connection getConnection() {
+	public static Connection getConnection() {
 		
 		try {
 			Class.forName(DRIVER);
