@@ -7,29 +7,27 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import projeto.connection.ConnectionFactory;
-import projeto.model.bean.Cliente;
+import projeto.model.bean.Fornecedor;
 
-public class ClienteDAO {
+public class FornecedorDAO {
 	
-	public void Create(Cliente cliente) {
+	public void Create(Fornecedor fornecedor) {
 		
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
 		
 		try {
-			stmt = con.prepareStatement("INSERT INTO cliente (cpf, nome, endereco, telefone) VALUES (?, ?, ?, ?)");
-			stmt.setLong(1, cliente.getCpf());
-			stmt.setString(2, cliente.getNome());
-			stmt.setString(3, cliente.getEndereco());
-			stmt.setLong(4, cliente.getTelefone());
+			stmt = con.prepareStatement("INSERT INTO fornecedor (cnpj, nome) VALUES (?, ?)");
+			stmt.setLong(1, fornecedor.getCnpj());
+			stmt.setString(2, fornecedor.getNome());
 			
 			stmt.executeUpdate();
 			
 			JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Erro ao salvar, tente novamente");
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao salvar, tente novamente");
 		} finally {
 			ConnectionFactory.CloseConnection(con, stmt);
 		}
