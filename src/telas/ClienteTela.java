@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
@@ -21,11 +23,15 @@ import java.awt.event.FocusEvent;
 
 public class ClienteTela {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField nome;
 	private JTextField cpf;
 	private JTextField endereco;
 	private JTextField telefone;
+	private JLabel lblNomeCompleto;
+	private JLabel lblCpf;
+	private JLabel lblEndereo;
+	private JLabel lblTelefone;
 
 	/**
 	 * Launch the application.
@@ -68,43 +74,27 @@ public class ClienteTela {
 		frame.getContentPane().add(lblCadastrarCliente);
 		
 		nome = new JTextField();
-		nome.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				/*if(nome.getText().equals("Nome Completo")) {
-					nome.setText("");
-				}*/
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				nome.setText("Nome Completo");
-			}
-		});
 		nome.setForeground(Color.LIGHT_GRAY);
-		nome.setText("Nome Completo");
-		nome.setBounds(189, 87, 153, 31);
+		nome.setBounds(189, 85, 153, 31);
 		frame.getContentPane().add(nome);
 		nome.setColumns(10);
 		
 		cpf = new JTextField();
 		cpf.setHorizontalAlignment(SwingConstants.LEFT);
 		cpf.setForeground(Color.LIGHT_GRAY);
-		cpf.setText("CPF");
-		cpf.setBounds(189, 131, 153, 31);
+		cpf.setBounds(189, 140, 153, 31);
 		frame.getContentPane().add(cpf);
 		cpf.setColumns(10);
 		
 		endereco = new JTextField();
 		endereco.setForeground(Color.LIGHT_GRAY);
-		endereco.setText("Endere\u00E7o");
-		endereco.setBounds(189, 176, 153, 31);
+		endereco.setBounds(189, 194, 153, 31);
 		frame.getContentPane().add(endereco);
 		endereco.setColumns(10);
 		
 		telefone = new JTextField();
 		telefone.setForeground(Color.LIGHT_GRAY);
-		telefone.setText("Telefone");
-		telefone.setBounds(189, 227, 153, 31);
+		telefone.setBounds(189, 249, 153, 31);
 		frame.getContentPane().add(telefone);
 		telefone.setColumns(10);
 		
@@ -114,19 +104,22 @@ public class ClienteTela {
 				Cliente cliente = new Cliente();
 				ClienteDAO dao = new ClienteDAO();
 				
-				cliente.setNome(nome.getText());
-				cliente.setCpf(Long.parseLong(cpf.getText()));
-				cliente.setEndereco(endereco.getText());
-				cliente.setTelefone(Long.parseLong(telefone.getText()));
-				
-				dao.Create(cliente);
-				
+				if(nome.getText().isEmpty() || cpf.getText().isEmpty() || endereco.getText().isEmpty() || telefone.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
+				} else {
+					cliente.setNome(nome.getText());
+					cliente.setCpf(Long.parseLong(cpf.getText()));
+					cliente.setEndereco(endereco.getText());
+					cliente.setTelefone(Long.parseLong(telefone.getText()));
+					
+					dao.Create(cliente);
+				}
 			}
 		});
 		btnFinCadCli.setBackground(Color.DARK_GRAY);
 		btnFinCadCli.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnFinCadCli.setForeground(Color.WHITE);
-		btnFinCadCli.setBounds(221, 275, 97, 25);
+		btnFinCadCli.setBounds(223, 321, 97, 25);
 		frame.getContentPane().add(btnFinCadCli);
 		
 		JButton btnVoltarCadCli = new JButton("Voltar");
@@ -138,6 +131,30 @@ public class ClienteTela {
 		btnVoltarCadCli.setBackground(Color.DARK_GRAY);
 		btnVoltarCadCli.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnVoltarCadCli.setBounds(53, 321, 97, 25);
+		btnVoltarCadCli.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent argo0) {
+				frame.dispose();
+				
+			}
+		});
 		frame.getContentPane().add(btnVoltarCadCli);
+		
+		lblNomeCompleto = new JLabel("Nome completo");
+		lblNomeCompleto.setBounds(189, 72, 116, 14);
+		frame.getContentPane().add(lblNomeCompleto);
+		
+		lblCpf = new JLabel("CPF");
+		lblCpf.setBounds(189, 127, 46, 14);
+		frame.getContentPane().add(lblCpf);
+		
+		lblEndereo = new JLabel("Endere\u00E7o");
+		lblEndereo.setBounds(189, 182, 116, 14);
+		frame.getContentPane().add(lblEndereo);
+		
+		lblTelefone = new JLabel("Telefone");
+		lblTelefone.setBounds(189, 236, 153, 14);
+		frame.getContentPane().add(lblTelefone);
 	}
 }

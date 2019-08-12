@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
@@ -19,11 +21,16 @@ import java.awt.event.ActionEvent;
 
 public class EntradaTela {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField cnpj;
 	private JTextField codigo;
 	private JTextField qtd;
 	private JTextField preco;
+	private JLabel lblCnpjDoFornecedor;
+	private JLabel label;
+	private JLabel lblCdigoDaPea;
+	private JLabel lblQuantidade;
+	private JLabel lblPreo;
 
 	/**
 	 * Launch the application.
@@ -66,29 +73,25 @@ public class EntradaTela {
 		
 		cnpj = new JTextField();
 		cnpj.setForeground(Color.LIGHT_GRAY);
-		cnpj.setText("CNPJ do Fornecedor");
-		cnpj.setBounds(189, 87, 153, 31);
+		cnpj.setBounds(189, 85, 153, 31);
 		frame.getContentPane().add(cnpj);
 		cnpj.setColumns(10);
 		
 		codigo = new JTextField();
 		codigo.setForeground(Color.LIGHT_GRAY);
-		codigo.setText("C\u00F3digo da Pe\u00E7a");
-		codigo.setBounds(189, 131, 153, 31);
+		codigo.setBounds(189, 144, 153, 31);
 		frame.getContentPane().add(codigo);
 		codigo.setColumns(10);
 		
 		qtd = new JTextField();
 		qtd.setForeground(Color.LIGHT_GRAY);
-		qtd.setText("Quantidade");
-		qtd.setBounds(189, 176, 153, 31);
+		qtd.setBounds(189, 200, 153, 31);
 		frame.getContentPane().add(qtd);
 		qtd.setColumns(10);
 		
 		preco = new JTextField();
 		preco.setForeground(Color.LIGHT_GRAY);
-		preco.setText("Pre\u00E7o");
-		preco.setBounds(189, 227, 153, 31);
+		preco.setBounds(189, 254, 153, 31);
 		frame.getContentPane().add(preco);
 		preco.setColumns(10);
 		
@@ -98,19 +101,25 @@ public class EntradaTela {
 				Entrada entrada = new Entrada();
 				EntradaDAO dao = new EntradaDAO();
 				
-				entrada.setCnpj(Long.parseLong(cnpj.getText()));
-				entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
-				entrada.setQtd(Integer.parseInt(qtd.getText()));
-				entrada.setValor(Double.parseDouble(preco.getText()));
+				if(cnpj.getText().isEmpty() || codigo.getText().isEmpty() || qtd.getText().isEmpty() || preco.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
+				} else {
+					entrada.setCnpj(Long.parseLong(cnpj.getText()));
+					entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
+					entrada.setQtd(Integer.parseInt(qtd.getText()));
+					entrada.setValor(Double.parseDouble(preco.getText()));
+					
+					dao.Create(entrada);
+				}
 				
-				dao.Create(entrada);
+				
 				
 			}
 		});
 		btnFinRegEnt.setForeground(Color.WHITE);
 		btnFinRegEnt.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnFinRegEnt.setBackground(Color.DARK_GRAY);
-		btnFinRegEnt.setBounds(221, 275, 97, 25);
+		btnFinRegEnt.setBounds(221, 321, 97, 25);
 		frame.getContentPane().add(btnFinRegEnt);
 		
 		JButton btnVoltarRegEnt = new JButton("Voltar");
@@ -118,7 +127,35 @@ public class EntradaTela {
 		btnVoltarRegEnt.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnVoltarRegEnt.setBackground(Color.DARK_GRAY);
 		btnVoltarRegEnt.setBounds(53, 321, 97, 25);
+		btnVoltarRegEnt.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+				
+			}
+		});
 		frame.getContentPane().add(btnVoltarRegEnt);
+		
+		lblCnpjDoFornecedor = new JLabel("CNPJ do Fornecedor");
+		lblCnpjDoFornecedor.setBounds(189, 72, 129, 14);
+		frame.getContentPane().add(lblCnpjDoFornecedor);
+		
+		label = new JLabel("");
+		label.setBounds(189, 136, 46, 14);
+		frame.getContentPane().add(label);
+		
+		lblCdigoDaPea = new JLabel("C\u00F3digo da pe\u00E7a");
+		lblCdigoDaPea.setBounds(189, 127, 97, 14);
+		frame.getContentPane().add(lblCdigoDaPea);
+		
+		lblQuantidade = new JLabel("Quantidade");
+		lblQuantidade.setBounds(189, 186, 129, 14);
+		frame.getContentPane().add(lblQuantidade);
+		
+		lblPreo = new JLabel("Pre\u00E7o");
+		lblPreo.setBounds(189, 239, 46, 14);
+		frame.getContentPane().add(lblPreo);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -18,7 +19,7 @@ import java.awt.event.ActionEvent;
 
 public class FornecedorTela {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField nome;
 	private JTextField cnpj;
 
@@ -63,15 +64,13 @@ public class FornecedorTela {
 		
 		nome = new JTextField();
 		nome.setForeground(Color.LIGHT_GRAY);
-		nome.setText("Nome do Fornecedor");
-		nome.setBounds(189, 87, 153, 31);
+		nome.setBounds(189, 102, 153, 31);
 		frame.getContentPane().add(nome);
 		nome.setColumns(10);
 		
 		cnpj = new JTextField();
 		cnpj.setForeground(Color.LIGHT_GRAY);
-		cnpj.setText("CNPJ");
-		cnpj.setBounds(189, 131, 153, 31);
+		cnpj.setBounds(189, 161, 153, 31);
 		frame.getContentPane().add(cnpj);
 		cnpj.setColumns(10);
 		
@@ -81,17 +80,21 @@ public class FornecedorTela {
 				Fornecedor fornecedor = new Fornecedor();
 				FornecedorDAO dao = new FornecedorDAO();
 				
-				fornecedor.setCnpj(Long.parseLong(cnpj.getText()));
-				fornecedor.setNome(nome.getText());
-				
-				dao.Create(fornecedor);
+				if(cnpj.getText().isEmpty() || nome.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
+				} else {
+					fornecedor.setCnpj(Long.parseLong(cnpj.getText()));
+					fornecedor.setNome(nome.getText());
+					
+					dao.Create(fornecedor);
+				}
 				
 			}
 		});
 		btnFinCadForn.setBackground(Color.DARK_GRAY);
 		btnFinCadForn.setForeground(Color.WHITE);
 		btnFinCadForn.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		btnFinCadForn.setBounds(212, 182, 97, 25);
+		btnFinCadForn.setBounds(209, 217, 97, 25);
 		frame.getContentPane().add(btnFinCadForn);
 		
 		JButton btnVoltarCadForn = new JButton("Voltar");
@@ -99,7 +102,23 @@ public class FornecedorTela {
 		btnVoltarCadForn.setForeground(Color.WHITE);
 		btnVoltarCadForn.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnVoltarCadForn.setBounds(52, 264, 97, 25);
+		btnVoltarCadForn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent argo0) {
+				frame.dispose();
+				
+			}
+		});
 		frame.getContentPane().add(btnVoltarCadForn);
+		
+		JLabel lblNomeDoFornecedor = new JLabel("Nome do Fornecedor");
+		lblNomeDoFornecedor.setBounds(189, 85, 181, 14);
+		frame.getContentPane().add(lblNomeDoFornecedor);
+		
+		JLabel lblCnpj = new JLabel("CNPJ");
+		lblCnpj.setBounds(189, 144, 46, 14);
+		frame.getContentPane().add(lblCnpj);
 	}
 
 }

@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
@@ -20,12 +22,17 @@ import java.awt.event.FocusEvent;
 
 public class SaidaTela {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField cpf;
 	private JTextField codigo;
 	private JTextField qtd;
 	private JTextField formapag;
 	private JTextField valor;
+	private JLabel lblCpfDoCliente;
+	private JLabel lblCdigoDaPea;
+	private JLabel lblQuantidade;
+	private JLabel lblValor;
+	private JLabel lblOpoDePagamento;
 
 	/**
 	 * Launch the application.
@@ -68,48 +75,43 @@ public class SaidaTela {
 		
 		cpf = new JTextField();
 		cpf.setForeground(Color.LIGHT_GRAY);
-		cpf.setText("CPF do Cliente");
 		cpf.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		cpf.setBounds(191, 76, 153, 31);
+		cpf.setBounds(191, 83, 153, 31);
 		frame.getContentPane().add(cpf);
 		cpf.setColumns(10);
 		
 		codigo = new JTextField();
 		codigo.setForeground(Color.LIGHT_GRAY);
-		codigo.setText("C\u00F3digo da Pe\u00E7a");
-		codigo.setBounds(191, 118, 153, 31);
+		codigo.setBounds(191, 133, 153, 31);
 		frame.getContentPane().add(codigo);
 		codigo.setColumns(10);
 		
 		qtd = new JTextField();
 		qtd.setForeground(Color.LIGHT_GRAY);
-		qtd.setText("Quantidade");
-		qtd.setBounds(191, 160, 153, 31);
+		qtd.setBounds(191, 182, 153, 31);
 		frame.getContentPane().add(qtd);
 		qtd.setColumns(10);
 		
 		valor = new JTextField();
-		valor.setText("Valor");
 		valor.setForeground(Color.LIGHT_GRAY);
 		valor.setColumns(10);
-		valor.setBounds(191, 202, 153, 31);
+		valor.setBounds(191, 235, 153, 31);
 		frame.getContentPane().add(valor);
 		
 		formapag = new JTextField();
 		formapag.setForeground(Color.LIGHT_GRAY);
-		formapag.setText("Op\u00E7\u00E3o de Pagamento");
-		formapag.setBounds(191, 244, 153, 31);
+		formapag.setBounds(191, 285, 153, 31);
 		frame.getContentPane().add(formapag);
 		formapag.setColumns(10);
 		
 		JLabel lblTotalText = new JLabel("Total a Pagar");
 		lblTotalText.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTotalText.setBounds(204, 286, 129, 16);
+		lblTotalText.setBounds(204, 317, 129, 16);
 		frame.getContentPane().add(lblTotalText);
 		
 		JLabel valorTotal = new JLabel("R$ 00,00");
 		valorTotal.setHorizontalAlignment(SwingConstants.CENTER);
-		valorTotal.setBounds(238, 307, 56, 16);
+		valorTotal.setBounds(226, 337, 83, 16);
 		frame.getContentPane().add(valorTotal);
 		
 		JButton btnFinRegSaída = new JButton("Finalizar");
@@ -119,17 +121,30 @@ public class SaidaTela {
 				Saida saida = new Saida();
 				SaidaDAO dao = new SaidaDAO();
 				
-				saida.setCpf(Long.parseLong(cpf.getText()));
-				saida.setCodigoProduto(Integer.parseInt(codigo.getText()));
-				saida.setQtd(Integer.parseInt(qtd.getText()));
-				saida.setValorTotal(Integer.parseInt(qtd.getText()), Double.parseDouble(valor.getText()));
-				saida.setFormaPag(Integer.parseInt(formapag.getText()));
+				if(cpf.getText().isEmpty() || codigo.getText().isEmpty() || qtd.getText().isEmpty() || valor.getText().isEmpty() || formapag.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
+				} else {
+					saida.setValorTotal(Integer.parseInt(qtd.getText()), Double.parseDouble(valor.getText()));
+					
+					Double total = saida.getValorTotal();
+					int option;
+					option = JOptionPane.showConfirmDialog(null, "O valor total da sua compra é R$ " + total + "?");
+					if(option == JOptionPane.YES_OPTION) {
+						saida.setCpf(Long.parseLong(cpf.getText()));
+						saida.setCodigoProduto(Integer.parseInt(codigo.getText()));
+						saida.setQtd(Integer.parseInt(qtd.getText()));
+						saida.setValorTotal(Integer.parseInt(qtd.getText()), Double.parseDouble(valor.getText()));
+						saida.setFormaPag(Integer.parseInt(formapag.getText()));
+						JOptionPane.showMessageDialog(null, "Compra Confirmada!");
+						
+						valorTotal.setText("RS "+total);
+						
+						dao.Create(saida);
+					} else {
+						JOptionPane.showMessageDialog(null, "Revise os campos de quantidade e valor");
+					}
+				}
 				
-				Double total = saida.getValorTotal();
-				
-				valorTotal.setText("RS "+total);
-				
-				dao.Create(saida);
 				
 			}
 		});
@@ -137,7 +152,7 @@ public class SaidaTela {
 		btnFinRegSaída.setBackground(Color.DARK_GRAY);
 		btnFinRegSaída.setForeground(Color.WHITE);
 		btnFinRegSaída.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		btnFinRegSaída.setBounds(225, 336, 97, 25);
+		btnFinRegSaída.setBounds(224, 354, 97, 25);
 		frame.getContentPane().add(btnFinRegSaída);
 		
 		JButton btnVoltarRegSaída = new JButton("Voltar");
@@ -145,6 +160,34 @@ public class SaidaTela {
 		btnVoltarRegSaída.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnVoltarRegSaída.setBackground(Color.DARK_GRAY);
 		btnVoltarRegSaída.setBounds(52, 354, 97, 25);
+		btnVoltarRegSaída.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+				
+			}
+		});
 		frame.getContentPane().add(btnVoltarRegSaída);
+		
+		lblCpfDoCliente = new JLabel("CPF do Cliente");
+		lblCpfDoCliente.setBounds(191, 71, 130, 14);
+		frame.getContentPane().add(lblCpfDoCliente);
+		
+		lblCdigoDaPea = new JLabel("C\u00F3digo da pe\u00E7a");
+		lblCdigoDaPea.setBounds(191, 118, 165, 14);
+		frame.getContentPane().add(lblCdigoDaPea);
+		
+		lblQuantidade = new JLabel("Quantidade");
+		lblQuantidade.setBounds(191, 168, 103, 14);
+		frame.getContentPane().add(lblQuantidade);
+		
+		lblValor = new JLabel("Valor");
+		lblValor.setBounds(191, 220, 46, 14);
+		frame.getContentPane().add(lblValor);
+		
+		lblOpoDePagamento = new JLabel("Op\u00E7\u00E3o de pagamento");
+		lblOpoDePagamento.setBounds(191, 270, 153, 14);
+		frame.getContentPane().add(lblOpoDePagamento);
 	}
 }

@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 public class Principal implements ActionListener{
 
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -64,6 +64,12 @@ public class Principal implements ActionListener{
 		btnCadastrar.addActionListener(this);
 		
 		JButton btnEntrada = new JButton("Entrada");
+		btnEntrada.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EntradaTela entrada = new EntradaTela();
+				entrada.frame.setVisible(true);
+			}
+		});
 		btnEntrada.setBounds(262, 218, 131, 60);
 		btnEntrada.setForeground(Color.WHITE);
 		btnEntrada.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -71,6 +77,12 @@ public class Principal implements ActionListener{
 		frame.getContentPane().add(btnEntrada);
 		
 		JButton btnSaída = new JButton("Sa\u00EDda");
+		btnSaída.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SaidaTela saida = new SaidaTela();
+				saida.frame.setVisible(true);
+			}
+		});
 		btnSaída.setBounds(475, 218, 131, 60);
 		btnSaída.setForeground(Color.WHITE);
 		btnSaída.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -81,6 +93,10 @@ public class Principal implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		//if(e.getSource() == btnCadastrar){
+		CadastroTela cadastro = new CadastroTela();
+		
+		cadastro.frame.setVisible(true);
+		
 	}
 	}
 //}

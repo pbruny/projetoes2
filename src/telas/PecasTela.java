@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import projeto.model.bean.Pecas;
@@ -18,7 +19,7 @@ import java.awt.event.ActionEvent;
 
 public class PecasTela {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField codigo;
 	private JTextField nome;
 
@@ -63,15 +64,13 @@ public class PecasTela {
 		
 		nome = new JTextField();
 		nome.setForeground(Color.LIGHT_GRAY);
-		nome.setText("Nome da Pe\u00E7a");
-		nome.setBounds(189, 87, 153, 31);
+		nome.setBounds(189, 111, 153, 31);
 		frame.getContentPane().add(nome);
 		nome.setColumns(10);
 		
 		codigo = new JTextField();
 		codigo.setForeground(Color.LIGHT_GRAY);
-		codigo.setText("C\u00F3digo da Pe\u00E7a");
-		codigo.setBounds(189, 131, 153, 31);
+		codigo.setBounds(189, 168, 153, 31);
 		frame.getContentPane().add(codigo);
 		codigo.setColumns(10);
 		
@@ -81,16 +80,21 @@ public class PecasTela {
 				Pecas peca = new Pecas();
 				PecasDAO dao = new PecasDAO();
 				
-				peca.setCodigoPeca(Integer.parseInt(codigo.getText()));
-				peca.setNome(nome.getText());
+				if(codigo.getText().isEmpty() || nome.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
+				} else {
+					peca.setCodigoPeca(Integer.parseInt(codigo.getText()));
+					peca.setNome(nome.getText());
+					
+					dao.Create(peca);
+				}
 				
-				dao.Create(peca);
 			}
 		});
 		btnFinCadPeça.setForeground(Color.WHITE);
 		btnFinCadPeça.setBackground(Color.DARK_GRAY);
 		btnFinCadPeça.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		btnFinCadPeça.setBounds(212, 182, 97, 25);
+		btnFinCadPeça.setBounds(212, 216, 97, 25);
 		frame.getContentPane().add(btnFinCadPeça);
 		
 		JButton btnVoltarCadPeça = new JButton("Voltar");
@@ -98,7 +102,20 @@ public class PecasTela {
 		btnVoltarCadPeça.setForeground(Color.WHITE);
 		btnVoltarCadPeça.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnVoltarCadPeça.setBounds(52, 264, 97, 25);
+		btnVoltarCadPeça.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+			}
+		});
 		frame.getContentPane().add(btnVoltarCadPeça);
+		
+		JLabel lblNomeDaPea = new JLabel("Nome da pe\u00E7a");
+		lblNomeDaPea.setBounds(189, 96, 120, 14);
+		frame.getContentPane().add(lblNomeDaPea);
+		
+		JLabel lblCdigoDaPea = new JLabel("C\u00F3digo da pe\u00E7a");
+		lblCdigoDaPea.setBounds(189, 154, 97, 14);
+		frame.getContentPane().add(lblCdigoDaPea);
 	}
 
 }
