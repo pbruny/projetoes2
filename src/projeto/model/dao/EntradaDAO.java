@@ -7,19 +7,23 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import projeto.connection.ConnectionFactory;
-import projeto.model.bean.Pecas;
+import projeto.model.bean.Entrada;
 
-public class PecasDAO {
+public class EntradaDAO {
 	
-	public void Create(Pecas peca) {
+	public void Create(Entrada entrada) {
 		
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
 		
 		try {
-			stmt = con.prepareStatement("INSERT INTO pecas (codigoPeca, nome) VALUES (?, ?)");
-			stmt.setLong(1, peca.getCodigoPeca());
-			stmt.setString(2, peca.getNome());
+			stmt = con.prepareStatement("INSERT INTO entrada (id, codigoProduto, cnpj, qtd, valor) VALUES (?, ?, ?, ?, ?)");
+			stmt.setLong(1, entrada.getId());
+			stmt.setLong(2, entrada.getCodigoProduto());
+			stmt.setLong(3, entrada.getCnpj());
+			stmt.setLong(4, entrada.getQtd());
+			stmt.setDouble(5, entrada.getValor());
+			
 			
 			stmt.executeUpdate();
 			
@@ -32,5 +36,5 @@ public class PecasDAO {
 			ConnectionFactory.CloseConnection(con, stmt);
 		}
 	}
-
+	
 }
