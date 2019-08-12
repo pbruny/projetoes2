@@ -36,8 +36,8 @@ public class Saida {
 		return valorTotal;
 	}
 	
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
+	public void setValorTotal(int quantidade, Double valor) {
+		this.valorTotal = quantidade * valor;
 	}
 	
 	public int getFormaPag() {
