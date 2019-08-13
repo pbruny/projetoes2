@@ -105,7 +105,15 @@ public class EntradaTela {
 				if(cnpj.getText().isEmpty() || codigo.getText().isEmpty() || qtd.getText().isEmpty() || preco.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
 				} else {
-
+						if(dao.read().isEmpty()) {
+							entrada.setCnpj(Long.parseLong(cnpj.getText()));
+							entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
+							entrada.setQtd(Integer.parseInt(qtd.getText()));
+							entrada.setValor(Double.parseDouble(preco.getText()));
+							dao.Create(entrada);
+							//JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+						}
+						else {
 						for(Entrada ent: dao.read()) {
 							entradaAux.setCnpj(ent.getCnpj());
 							entradaAux.setCodigoProduto(ent.getCodigoProduto());
@@ -119,6 +127,7 @@ public class EntradaTela {
 								entrada.setValor(Double.parseDouble(preco.getText()));
 								dao.Update(entrada);
 								JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+								System.out.println("caiu aqui");
 								break;
 							} else {
 								entrada.setCnpj(Long.parseLong(cnpj.getText()));
@@ -126,14 +135,16 @@ public class EntradaTela {
 								entrada.setQtd(Integer.parseInt(qtd.getText()));
 								entrada.setValor(Double.parseDouble(preco.getText()));
 								dao.Create(entrada);
+								//JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
 								break;
 							}
 							
 						}
 					}
-					
-					frame.dispose();
 				}
+					
+				frame.dispose();
+			}
 				
 				
 				
