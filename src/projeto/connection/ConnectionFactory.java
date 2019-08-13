@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 	
-	private final static String DRIVER = "com.mysql.jdbc.Driver";
+	private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private final static String URL = "jdbc:mysql://localhost:3306/dboficina?useTimezone=true&serverTimezone=UTC&useSSL=false";
 	private final static String USER = "root";
 	private final static String PASS = "root";

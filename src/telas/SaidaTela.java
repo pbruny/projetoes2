@@ -134,12 +134,14 @@ public class SaidaTela {
 						saida.setCodigoProduto(Integer.parseInt(codigo.getText()));
 						saida.setQtd(Integer.parseInt(qtd.getText()));
 						saida.setValorTotal(Integer.parseInt(qtd.getText()), Double.parseDouble(valor.getText()));
-						saida.setFormaPag(Integer.parseInt(formapag.getText()));
+						saida.setFormaPag(formapag.getText());
 						JOptionPane.showMessageDialog(null, "Compra Confirmada!");
 						
 						valorTotal.setText("RS "+total);
 						
 						dao.Create(saida);
+						
+						//frame.dispose();
 					} else {
 						JOptionPane.showMessageDialog(null, "Revise os campos de quantidade e valor");
 					}

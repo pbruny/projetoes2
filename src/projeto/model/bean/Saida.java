@@ -6,7 +6,7 @@ public class Saida {
 	private int codigoProduto;
 	private long qtd;
 	private Double valorTotal;
-	private int formaPag;
+	private String formaPag;
 	
 	public long getCpf() {
 		return cpf;
@@ -40,11 +40,15 @@ public class Saida {
 		this.valorTotal = quantidade * valor;
 	}
 	
-	public int getFormaPag() {
+	public void setValorTotal(Double valor ) {
+		this.valorTotal = valor;
+	}
+	
+	public String getFormaPag() {
 		return formaPag;
 	}
 	
-	public void setFormaPag(int formaPag) {
+	public void setFormaPag(String formaPag) {
 		this.formaPag = formaPag;
 	}
 	
