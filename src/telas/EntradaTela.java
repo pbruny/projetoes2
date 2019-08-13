@@ -102,19 +102,19 @@ public class EntradaTela {
 				Entrada entradaAux = new Entrada();
 				EntradaDAO dao = new EntradaDAO();
 				
-				for(Entrada ent: dao.read()) {
-					if(Integer.parseInt(codigo.getText()) == ent.getCodigoProduto()) {
-						entradaAux.setCnpj(Long.parseLong(cnpj.getText()));
-						entradaAux.setCodigoProduto(Integer.parseInt(codigo.getText()));
-						entradaAux.setQtd(Integer.parseInt(qtd.getText()) + ent.getQtd());
-						entradaAux.setValor(Double.parseDouble(preco.getText()));
-						break;
-					}
-				}
 				
 				if(cnpj.getText().isEmpty() || codigo.getText().isEmpty() || qtd.getText().isEmpty() || preco.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
 				} else {
+					for(Entrada ent: dao.read()) {
+						if(Integer.parseInt(codigo.getText()) == ent.getCodigoProduto()) {
+							entradaAux.setCnpj(Long.parseLong(cnpj.getText()));
+							entradaAux.setCodigoProduto(Integer.parseInt(codigo.getText()));
+							entradaAux.setQtd(Integer.parseInt(qtd.getText()) + ent.getQtd());
+							entradaAux.setValor(Double.parseDouble(preco.getText()));
+							break;
+						}
+					}
 						if(dao.read().isEmpty()) {
 							entrada.setCnpj(Long.parseLong(cnpj.getText()));
 							entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
@@ -126,24 +126,19 @@ public class EntradaTela {
 						else if(Integer.parseInt(codigo.getText()) == entradaAux.getCodigoProduto()) {
 								dao.Update(entradaAux);
 								JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
-								System.out.println("caiu aqui");
 							} else {
 								entrada.setCnpj(Long.parseLong(cnpj.getText()));
 								entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
 								entrada.setQtd(Integer.parseInt(qtd.getText()));
 								entrada.setValor(Double.parseDouble(preco.getText()));
 								dao.Create(entrada);
+								
 								//JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
 							}
 							
 						}
-					
-				frame.dispose();
 			}
-				
-				
-				
-			});
+		});
 		btnFinRegEnt.setForeground(Color.WHITE);
 		btnFinRegEnt.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnFinRegEnt.setBackground(Color.DARK_GRAY);
