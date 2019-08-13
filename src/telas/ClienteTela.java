@@ -113,6 +113,7 @@ public class ClienteTela {
 					cliente.setTelefone(Long.parseLong(telefone.getText()));
 					
 					dao.Create(cliente);
+					frame.dispose();
 				}
 			}
 		});

@@ -2,6 +2,7 @@ package telas;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -10,7 +11,9 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import projeto.model.bean.Entrada;
 import projeto.model.bean.Saida;
+import projeto.model.dao.EntradaDAO;
 import projeto.model.dao.SaidaDAO;
 
 import javax.swing.JTextField;
@@ -87,6 +90,30 @@ public class SaidaTela {
 		codigo.setColumns(10);
 		
 		qtd = new JTextField();
+		qtd.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				Entrada entradaAux = new Entrada();
+				EntradaDAO entdao = new EntradaDAO();
+				Saida saida = new Saida();
+				
+				saida.setCodigoProduto(Integer.parseInt(codigo.getText()));
+				saida.setQtd(Integer.parseInt(qtd.getText()));
+				for(Entrada ent: entdao.read()) {
+					entradaAux.setCnpj(ent.getCnpj());
+					entradaAux.setCodigoProduto(ent.getCodigoProduto());
+					entradaAux.setQtd(ent.getQtd());
+					entradaAux.setValor(ent.getValor());
+					if(saida.getCodigoProduto() == entradaAux.getCodigoProduto()) {
+						valor.setText(entradaAux.getValor().toString());
+						break;
+					}	
+				}
+				
+				
+				
+			}
+		});
 		qtd.setForeground(Color.LIGHT_GRAY);
 		qtd.setBounds(191, 182, 153, 31);
 		frame.getContentPane().add(qtd);
@@ -120,6 +147,8 @@ public class SaidaTela {
 				
 				Saida saida = new Saida();
 				SaidaDAO dao = new SaidaDAO();
+				Entrada entradaAux = new Entrada();
+				EntradaDAO entdao = new EntradaDAO();
 				
 				if(cpf.getText().isEmpty() || codigo.getText().isEmpty() || qtd.getText().isEmpty() || valor.getText().isEmpty() || formapag.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
@@ -135,13 +164,26 @@ public class SaidaTela {
 						saida.setQtd(Integer.parseInt(qtd.getText()));
 						saida.setValorTotal(Integer.parseInt(qtd.getText()), Double.parseDouble(valor.getText()));
 						saida.setFormaPag(formapag.getText());
+						
+						for(Entrada ent: entdao.read()) {
+							entradaAux.setCnpj(ent.getCnpj());
+							entradaAux.setCodigoProduto(ent.getCodigoProduto());
+							entradaAux.setQtd(ent.getQtd());
+							entradaAux.setValor(ent.getValor());
+							
+							if(Integer.parseInt(codigo.getText()) == entradaAux.getCodigoProduto()) {
+								entradaAux.setQtd((int)(entradaAux.getQtd() - saida.getQtd()));
+								entdao.Update(entradaAux);
+								break;
+							}
+						}
 						JOptionPane.showMessageDialog(null, "Compra Confirmada!");
 						
 						valorTotal.setText("RS "+total);
 						
 						dao.Create(saida);
 						
-						//frame.dispose();
+						frame.dispose();
 					} else {
 						JOptionPane.showMessageDialog(null, "Revise os campos de quantidade e valor");
 					}

@@ -87,6 +87,7 @@ public class PecasTela {
 					peca.setNome(nome.getText());
 					
 					dao.Create(peca);
+					frame.dispose();
 				}
 				
 			}

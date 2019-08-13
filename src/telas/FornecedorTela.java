@@ -87,6 +87,7 @@ public class FornecedorTela {
 					fornecedor.setNome(nome.getText());
 					
 					dao.Create(fornecedor);
+					frame.dispose();
 				}
 				
 			}

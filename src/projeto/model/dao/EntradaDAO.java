@@ -21,7 +21,7 @@ public class EntradaDAO {
 		PreparedStatement stmt = null;
 		
 		try {
-			stmt = con.prepareStatement("INSERT INTO entrada (codigoProduto, cnpj, qtd, valor) VALUES (?, ?, ?, ?, ?)");
+			stmt = con.prepareStatement("INSERT INTO entrada (codigoProduto, cnpj, qtd, valor) VALUES (?, ?, ?, ?)");
 			stmt.setLong(1, entrada.getCodigoProduto());
 			stmt.setLong(2, entrada.getCnpj());
 			stmt.setLong(3, entrada.getQtd());
@@ -76,16 +76,16 @@ public class EntradaDAO {
 		PreparedStatement stmt = null;
 		
 		try {
-			stmt = con.prepareStatement("UPDATE entrada SET codigoProduto = ?, cnpj = ?, qtd = ?, valor = ? WHERE id = ?");
-			stmt.setLong(1, entrada.getCodigoProduto());
-			stmt.setLong(2, entrada.getCnpj());
-			stmt.setLong(3, entrada.getQtd());
-			stmt.setDouble(4, entrada.getValor());
-			stmt.setLong(5, entrada.getId());
+			stmt = con.prepareStatement("UPDATE entrada SET qtd = ?, valor = ?, cnpj = ? WHERE codigoProduto = ?");
+			
+			stmt.setInt(1, entrada.getQtd());
+			stmt.setDouble(2, entrada.getValor());
+			stmt.setLong(3, entrada.getCnpj());
+			stmt.setInt(4, entrada.getCodigoProduto());
 			
 			stmt.executeUpdate();
 			
-			JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+			//JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erro ao atualizar, tente novamente");

@@ -99,23 +99,45 @@ public class EntradaTela {
 		btnFinRegEnt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Entrada entrada = new Entrada();
+				Entrada entradaAux = new Entrada();
 				EntradaDAO dao = new EntradaDAO();
 				
 				if(cnpj.getText().isEmpty() || codigo.getText().isEmpty() || qtd.getText().isEmpty() || preco.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "É necessário o preenchimento de todos os campos");
 				} else {
-					entrada.setCnpj(Long.parseLong(cnpj.getText()));
-					entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
-					entrada.setQtd(Integer.parseInt(qtd.getText()));
-					entrada.setValor(Double.parseDouble(preco.getText()));
+
+						for(Entrada ent: dao.read()) {
+							entradaAux.setCnpj(ent.getCnpj());
+							entradaAux.setCodigoProduto(ent.getCodigoProduto());
+							entradaAux.setQtd(ent.getQtd());
+							entradaAux.setValor(ent.getValor());
+							
+							if(Integer.parseInt(codigo.getText()) == entradaAux.getCodigoProduto()) {
+								entrada.setCnpj(Long.parseLong(cnpj.getText()));
+								entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
+								entrada.setQtd(Integer.parseInt(qtd.getText()) + entradaAux.getQtd());
+								entrada.setValor(Double.parseDouble(preco.getText()));
+								dao.Update(entrada);
+								JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+								break;
+							} else {
+								entrada.setCnpj(Long.parseLong(cnpj.getText()));
+								entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
+								entrada.setQtd(Integer.parseInt(qtd.getText()));
+								entrada.setValor(Double.parseDouble(preco.getText()));
+								dao.Create(entrada);
+								break;
+							}
+							
+						}
+					}
 					
-					dao.Create(entrada);
+					frame.dispose();
 				}
 				
 				
 				
-			}
-		});
+			});
 		btnFinRegEnt.setForeground(Color.WHITE);
 		btnFinRegEnt.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnFinRegEnt.setBackground(Color.DARK_GRAY);
