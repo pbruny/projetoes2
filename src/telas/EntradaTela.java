@@ -122,17 +122,19 @@ public class EntradaTela {
 							entrada.setValor(Double.parseDouble(preco.getText()));
 							dao.Create(entrada);
 							//JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+							frame.dispose();
 						}
 						else if(Integer.parseInt(codigo.getText()) == entradaAux.getCodigoProduto()) {
 								dao.Update(entradaAux);
 								JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+								frame.dispose();
 							} else {
 								entrada.setCnpj(Long.parseLong(cnpj.getText()));
 								entrada.setCodigoProduto(Integer.parseInt(codigo.getText()));
 								entrada.setQtd(Integer.parseInt(qtd.getText()));
 								entrada.setValor(Double.parseDouble(preco.getText()));
 								dao.Create(entrada);
-								
+								frame.dispose();
 								//JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
 							}
 							
